@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Application</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        /* style.css */
+
+        /* Style de base pour le corps de la page */
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background-color: #fff;
+        }
+
+        /* Conteneur principal du preloader */
+        .preloader-container {
+            position: fixed;
+            /* Reste en place même si on scroll */
+            top: 0;
+            left: 0;
+            width: 100vw;
+            /* 100% de la largeur de la vue */
+            height: 100vh;
+            /* 100% de la hauteur de la vue */
+            background-color: #f8f8fa;
+            /* Couleur de fond légèrement grise comme sur l'image */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            /* S'assure qu'il est au-dessus de tout le reste */
+            transition: opacity 0.75s, visibility 0.75s;
+            /* Pour la transition de disparition */
+        }
+
+        /* Classe ajoutée par JS pour cacher le preloader */
+        .preloader-hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* L'anneau qui tourne (le spinner) */
+        .spinner {
+            width: 150px;
+            height: 150px;
+            border: 1px solid rgba(114, 20, 72, 0.2);
+            /* Bordure légère pour le cercle complet */
+            border-top-color: #e63946;
+            /* Couleur violette de la partie visible de l'anneau */
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite;
+            /* Fait appel à l'animation 'spin' */
+            position: absolute;
+        }
+
+        /* Le logo au centre */
+        .preloader-logo {
+            width: 70px;
+            /* Ajustez la taille de votre logo */
+            height: auto;
+            /* Pas besoin de le positionner, le flexbox du conteneur s'en charge */
+        }
+
+        /* L'animation de rotation */
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Le contenu principal de la page (optionnel, pour la démo) */
+        .main-content {
+            padding: 2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="preloader-container">
+        <div class="spinner"></div>
+        <img src="logo.png" class="preloader-logo" alt="Logo de chargement">
+    </div>
+    <div class="main-content">
+        <h1>Bienvenue sur ma page !</h1>
+        <p>Le contenu de l'application s'affiche ici une fois le chargement terminé.</p>
+    </div>
+    <!-- <script src="script.js"></script> -->
+    <script>
+        // script.js
+        document.addEventListener("DOMContentLoaded", () => {
+            const preloader = document.querySelector(".preloader-container");
+
+            // Définir la durée minimale d'affichage en millisecondes
+            // 2500ms = 2.5 secondes. Vous pouvez ajuster cette valeur.
+            const minDisplayTime = 3500;
+
+            // Récupérer l'heure de début
+            const startTime = new Date().getTime();
+
+            // Fonction pour cacher le preloader
+            const hidePreloader = () => {
+                const endTime = new Date().getTime();
+                const elapsedTime = endTime - startTime;
+
+                // Calculer le temps d'attente restant pour atteindre la durée minimale
+                const timeToWait = Math.max(0, minDisplayTime - elapsedTime);
+
+                setTimeout(() => {
+                    if (preloader) {
+                        preloader.classList.add("preloader-hidden");
+                    }
+                }, timeToWait);
+            };
+
+            // Écouter l'événement 'load' qui se déclenche quand TOUT (images incluses) est chargé
+            window.addEventListener("load", hidePreloader);
+        });
+    </script>
+</body>
+
+</html>
