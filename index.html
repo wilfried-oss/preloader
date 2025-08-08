@@ -19,22 +19,16 @@
         /* Conteneur principal du preloader */
         .preloader-container {
             position: fixed;
-            /* Reste en place même si on scroll */
             top: 0;
             left: 0;
             width: 100vw;
-            /* 100% de la largeur de la vue */
             height: 100vh;
-            /* 100% de la hauteur de la vue */
             background-color: #f8f8fa;
-            /* Couleur de fond légèrement grise comme sur l'image */
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            /* S'assure qu'il est au-dessus de tout le reste */
             transition: opacity 0.75s, visibility 0.75s;
-            /* Pour la transition de disparition */
         }
 
         /* Classe ajoutée par JS pour cacher le preloader */
@@ -44,28 +38,33 @@
         }
 
         /* L'anneau qui tourne (le spinner) */
+        .spinner-wrapper {
+            position: relative;
+            /* permet au logo d'être centré par rapport au spinner */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         .spinner {
             width: 150px;
             height: 150px;
             border: 1px solid rgba(114, 20, 72, 0.2);
-            /* Bordure légère pour le cercle complet */
             border-top-color: #e63946;
-            /* Couleur violette de la partie visible de l'anneau */
             border-radius: 50%;
             animation: spin 1.2s linear infinite;
-            /* Fait appel à l'animation 'spin' */
-            /* position: absolute; */
         }
+
+
 
         /* Le logo au centre */
+
         .preloader-logo {
+            position: absolute;
             width: 70px;
-            /* Ajustez la taille de votre logo */
             height: auto;
-            /* Pas besoin de le positionner, le flexbox du conteneur s'en charge */
         }
 
-        /* L'animation de rotation */
         @keyframes spin {
             from {
                 transform: rotate(0deg);
@@ -87,9 +86,12 @@
 <body>
 
     <div class="preloader-container">
-        <div class="spinner"></div>
-        <img src="assets/images/logo_reverse.png" class="preloader-logo" alt="Logo de chargement">
+        <div class="spinner-wrapper">
+            <div class="spinner"></div>
+            <img src="assets/images/logo_reverse.png" class="preloader-logo" alt="Logo de chargement">
+        </div>
     </div>
+
     <div class="main-content">
         <h1>Bienvenue sur ma page !</h1>
         <p>Le contenu de l'application s'affiche ici une fois le chargement terminé.</p>
