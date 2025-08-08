@@ -4,31 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Application</title>
-    <!-- <link rel="stylesheet" href="style.css"> -->
+    <title>Preloader Centré</title>
     <style>
-        /* style.css */
-
-        /* Style de base pour le corps de la page */
-        body {
-            margin: 0;
-            font-family: sans-serif;
-            background-color: #fff;
-        }
-
         /* Conteneur principal du preloader */
         .preloader-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            inset: 0;
+            /* remplace top/left/right/bottom */
             background-color: #f8f8fa;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
             transition: opacity 0.75s, visibility 0.75s;
+            height: 100vh;
+            /* fallback */
+        }
+
+        /* Pour mobiles avec barres d'adresse dynamiques */
+        @supports (height: 100dvh) {
+            .preloader-container {
+                height: 100dvh;
+            }
         }
 
         /* Classe ajoutée par JS pour cacher le preloader */
@@ -37,15 +34,15 @@
             visibility: hidden;
         }
 
-        /* L'anneau qui tourne (le spinner) */
+        /* Conteneur du spinner et du logo */
         .spinner-wrapper {
             position: relative;
-            /* permet au logo d'être centré par rapport au spinner */
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
+        /* L'anneau qui tourne */
         .spinner {
             width: 150px;
             height: 150px;
@@ -55,16 +52,14 @@
             animation: spin 1.2s linear infinite;
         }
 
-
-
         /* Le logo au centre */
-
         .preloader-logo {
             position: absolute;
             width: 70px;
             height: auto;
         }
 
+        /* Animation du spinner */
         @keyframes spin {
             from {
                 transform: rotate(0deg);
@@ -75,7 +70,7 @@
             }
         }
 
-        /* Le contenu principal de la page (optionnel, pour la démo) */
+        /* Contenu principal */
         .main-content {
             padding: 2rem;
             text-align: center;
@@ -93,41 +88,28 @@
     </div>
 
     <div class="main-content">
-        <h1>Bienvenue sur ma page !</h1>
+        <h1>Bienvenue Dido !</h1>
         <p>Le contenu de l'application s'affiche ici une fois le chargement terminé.</p>
     </div>
-    <!-- <script src="script.js"></script> -->
+
     <script>
-        // script.js
         document.addEventListener("DOMContentLoaded", () => {
             const preloader = document.querySelector(".preloader-container");
+            const minDisplayTime = 3500; // en ms
+            const startTime = Date.now();
 
-            // Définir la durée minimale d'affichage en millisecondes
-            // 2500ms = 2.5 secondes. Vous pouvez ajuster cette valeur.
-            const minDisplayTime = 3500;
-
-            // Récupérer l'heure de début
-            const startTime = new Date().getTime();
-
-            // Fonction pour cacher le preloader
             const hidePreloader = () => {
-                const endTime = new Date().getTime();
-                const elapsedTime = endTime - startTime;
-
-                // Calculer le temps d'attente restant pour atteindre la durée minimale
+                const elapsedTime = Date.now() - startTime;
                 const timeToWait = Math.max(0, minDisplayTime - elapsedTime);
-
                 setTimeout(() => {
-                    if (preloader) {
-                        preloader.classList.add("preloader-hidden");
-                    }
+                    preloader.classList.add("preloader-hidden");
                 }, timeToWait);
             };
 
-            // Écouter l'événement 'load' qui se déclenche quand TOUT (images incluses) est chargé
             window.addEventListener("load", hidePreloader);
         });
     </script>
+
 </body>
 
 </html>
